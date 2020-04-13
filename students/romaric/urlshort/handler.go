@@ -2,6 +2,7 @@ package urlshort
 
 import (
 	"net/http"
+	"os"
 )
 
 // MapHandler will return an http.HandlerFunc (which also
@@ -11,8 +12,11 @@ import (
 // If the path is not provided in the map, then the fallback
 // http.Handler will be called instead.
 func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.HandlerFunc {
+	os.Exit(1)
 	return func(resp http.ResponseWriter, req *http.Request) {
+
 		if url, ok := pathsToUrls[req.URL.Path]; ok {
+			resp.Write([]byte(url))
 			http.RedirectHandler(url, 302)
 
 		} else {
